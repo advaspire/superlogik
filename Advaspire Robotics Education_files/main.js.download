@@ -1,0 +1,1353 @@
+// const API_URL = "http://localhost:1337";
+const API_URL = "https://api.advaspire.com";
+
+function fetchAPI(method, endpoint) {
+  return $.ajax({
+    url: `${API_URL}/${endpoint}`,
+    method,
+    dataType: "json",
+  })
+    .done(function (res) {
+      return res;
+    })
+    .fail(function (err) {
+      return err;
+    });
+}
+
+function fetchParams(paramName) {
+  const paramSearch = new URLSearchParams(window.location.search);
+  return paramSearch.get(paramName);
+}
+
+function formatDate(gmtDate) {
+  // e.g. 27/12/2018, 10:00:00am
+  const date = new Date(gmtDate);
+  return `${date.toLocaleDateString("en-GB")}, ${date.toLocaleTimeString(
+    "en-US"
+  )}`;
+}
+
+function renderHeader() {
+  $("#adv-header").append(
+    $(`
+        <div class="mkdf-top-bar">
+            <div class="mkdf-grid">
+                <div class="mkdf-vertical-align-containers">
+                    <div class="mkdf-position-left">
+                        <div class="mkdf-position-left-inner">
+                            <div id="text-11" class="widget widget_text mkdf-top-bar-widget">
+                                <div class="textwidget">
+                                    <div style="display: inline-block;font-size: 12px; color: #606264px;">WELCOME
+                                    </div>
+                                    <a
+                                        href="tel:+60382115425"
+                                        style="display: inline-block; font-size: 12px; margin-left:15px; color: #606264px;">
+                                        CALL +603 8211 5425
+                                    </a>
+                                    <div
+                                        style="display: inline-block;font-size: 12px; margin-left:15px; color: #606264px;">
+                                        FOLLOW US
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: #606264;;font-size: 12px"
+                                href="https://twitter.com/advaspire_hq" target="_blank">
+                                <span class="mkdf-social-icon-widget  social_twitter    "></span> </a>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: #606264;;font-size: 15px;margin: 0 14px;"
+                                href="https://www.instagram.com/advaspire_robotics" target="_blank">
+                                <span class="mkdf-social-icon-widget fa fa-instagram     "></span> </a>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: #606264;;font-size: 12px"
+                                href="https://www.facebook.com/advaspire/" target="_blank">
+                                <span class="mkdf-social-icon-widget  social_facebook    "></span> </a>
+                        </div>
+                    </div>
+                    <!-- <div class="mkdf-position-right">
+                        <div class="mkdf-position-right-inner">
+                            <div class="widget mkdf-login-register-widget mkdf-user-not-logged-in"><a href="#"
+                                    class="mkdf-modal-opener mkdf-login-opener" data-modal="login">Login</a><a
+                                    href=" https://forms.gle/6ApjmjVPJkeUoY21A" class="mkdf-modal-opener mkdf-register-opener"
+                                    data-modal="register">Free Trial</a></div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <header class="mkdf-page-header">
+            <div class="mkdf-fixed-wrapper">
+                <div class="mkdf-menu-area mkdf-menu-right">
+                    <div class="mkdf-grid">
+                        <div class="mkdf-vertical-align-containers">
+                            <div class="mkdf-position-left">
+                                <div class="mkdf-position-left-inner">
+                                    <div class="mkdf-logo-wrapper">
+                                        <a itemprop="url" href="index.html"
+                                            style="height: 32px;">
+                                            <img itemprop="image" class="mkdf-normal-logo"
+                                                src="assets/img/logo1.svg"
+                                                width="332" height="64" alt="logo" />
+                                            <img itemprop="image" class="mkdf-dark-logo"
+                                                src="assets/img/logo1.svg"
+                                                width="332" height="64" alt="dark logo" /> <img itemprop="image"
+                                                class="mkdf-light-logo"
+                                                src="assets/img/logo-light.png"
+                                                width="332" height="64" alt="light logo" /> </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mkdf-position-right">
+                                <div class="mkdf-position-right-inner">
+                                    <nav class="mkdf-main-menu mkdf-drop-down mkdf-default-nav">
+                                        <ul id="menu-main-menu" class="clearfix" >
+                                            <li id="nav-menu-item-78"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub narrow">
+                                                <a href="index.html" class=" current  no_link">
+                                                
+                                                <span
+                                                        class="item_outer"><span class="item_text">Home</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                
+                                            </li>
+
+
+                                          <li id="nav-menu-item-78"
+                                            class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub narrow">
+                                            <a href="about.html" class=" current" 
+                                                ><span
+                                                    class="item_outer"><span class="item_text">About</span><i
+                                                        class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                            
+                                        </li>
+
+                                           <li id="nav-menu-item-78"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub narrow">
+                                                <a href="courses.html" class=" current" 
+                                                    ><span
+                                                        class="item_outer"><span class="item_text">Courses</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a> 
+                                                
+                                            </li> 
+
+                                            <li id="nav-menu-item-78"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub narrow">
+                                                <a href="https://forms.gle/b8yjWiYitGmT5hA1A" target="_blank"  class=" current"
+                                                    ><span
+                                                        class="item_outer"><span class="item_text">Free Trial</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                
+                                            </li>
+
+                                         
+
+
+                                            <li id="nav-menu-item-78"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub narrow">
+                                                <a href="contact.html" class=" current  no_link" 
+                                                    ><span
+                                                        class="item_outer"><span class="item_text">Contact</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                
+                                            </li>
+
+                                            <!--<li id="nav-menu-item-82"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  has_sub wide">
+                                                <a href="#" class=" no_link"
+                                                    onclick="JavaScript: return false;"  ><span
+                                                        class="item_outer"><span class="item_text">Courses</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                <div class="second">
+                                                    <div class="inner">
+                                                        <ul>
+                                                            <li id="nav-menu-item-404"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">FEATURES</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-405"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/courses/all-courses/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">All
+                                                                                    Courses</span></span></a></li>
+                                                                    <li id="nav-menu-item-302"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/courses/standard-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Standard
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-88"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-course ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/course/business-english/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Course
+                                                                                    Single</span></span></a></li>
+                                                                    <li id="nav-menu-item-122"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/user-dashboard/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">User
+                                                                                    dashboard</span></span></a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-3869"
+                                                                class="menu-item menu-item-type-taxonomy menu-item-object-course-category uses-custom-sidebar">
+                                                                <a href="https://iacademy.qodeinteractive.com/course-category/business/"
+                                                                    class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">BUSINESS</span></span></a>
+                                                                <div class="widget mkdf-course-list-widget">
+                                                                    <div class="mkdf-course-list-holder mkdf-cl-gallery mkdf-normal-space mkdf-cl-one-column mkdf-cl-minimal mkdf-cl-pag-no-pagination     "
+                                                                        data-number-of-columns="1"
+                                                                        data-space-between-items="normal"
+                                                                        data-number-of-items="1"
+                                                                        data-enable-image="yes"
+                                                                        data-image-proportions="full"
+                                                                        data-category="business"
+                                                                        data-order-by="date" data-order="ASC"
+                                                                        data-item-layout="minimal"
+                                                                        data-enable-title="yes" data-title-tag="h5"
+                                                                        data-enable-instructor="no"
+                                                                        data-enable-price="yes"
+                                                                        data-enable-excerpt="yes"
+                                                                        data-excerpt-length="60"
+                                                                        data-enable-students="yes"
+                                                                        data-enable-category="yes"
+                                                                        data-pagination-type="no-pagination"
+                                                                        data-filter="no"
+                                                                        data-enable-article-animation="no"
+                                                                        data-course-slider-on="no"
+                                                                        data-enable-loop="yes"
+                                                                        data-enable-autoplay="yes"
+                                                                        data-slider-speed="5000"
+                                                                        data-slider-speed-animation="600"
+                                                                        data-enable-navigation="yes"
+                                                                        data-enable-pagination="yes"
+                                                                        data-widget="yes" data-max-num-pages="4"
+                                                                        data-next-page="2">
+                                                                        <div class="mkdf-cl-inner  clearfix">
+                                                                            <article
+                                                                                class="mkdf-cl-item post-269 course type-course status-publish has-post-thumbnail hentry course-category-business"
+                                                                                data-name=basic-marketing
+                                                                                data-date=1495756800>
+                                                                                <div class="mkdf-cl-item-inner">
+                                                                                    <div class="mkdf-cli-image">
+                                                                                        <img width="1000"
+                                                                                            height="639"
+                                                                                            src="assets/img/course-4-f-img.jpg"
+                                                                                            class="attachment-full size-full wp-post-image"
+                                                                                            alt="a"
+                                                                                            srcset="assets/img/course-4-f-img.jpg 1000w, assets/img/course-4-f-img-300x192.jpg 300w, assets/img/course-4-f-img-768x491.jpg 768w"
+                                                                                            sizes="(max-width: 1000px) 100vw, 1000px" />
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="mkdf-cli-text-holder">
+                                                                                        <div
+                                                                                            class="mkdf-cli-text-wrapper">
+                                                                                            <div
+                                                                                                class="mkdf-cli-text">
+                                                                                                <h5 itemprop="name"
+                                                                                                    class="mkdf-cli-title entry-title">
+                                                                                                    <a itemprop="url"
+                                                                                                        href="https://iacademy.qodeinteractive.com/course/basic-marketing/"
+                                                                                                        target="_self">
+                                                                                                        Basic
+                                                                                                        Marketing
+                                                                                                    </a>
+                                                                                                </h5>
+                                                                                                <div
+                                                                                                    class="mkdf-ci-price-holder clearfix">
+                                                                                                    <span
+                                                                                                        class="mkdf-ci-price-value">
+                                                                                                        &#36;40
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </article>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li id="nav-menu-item-3871"
+                                                                class="menu-item menu-item-type-taxonomy menu-item-object-course-category uses-custom-sidebar">
+                                                                <a href="https://iacademy.qodeinteractive.com/course-category/languages/"
+                                                                    class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">LANGUAGES</span></span></a>
+                                                                <div class="widget mkdf-course-list-widget">
+                                                                    <div class="mkdf-course-list-holder mkdf-cl-gallery mkdf-normal-space mkdf-cl-one-column mkdf-cl-minimal mkdf-cl-pag-no-pagination     "
+                                                                        data-number-of-columns="1"
+                                                                        data-space-between-items="normal"
+                                                                        data-number-of-items="1"
+                                                                        data-enable-image="yes"
+                                                                        data-image-proportions="full"
+                                                                        data-category="languages"
+                                                                        data-order-by="date" data-order="ASC"
+                                                                        data-item-layout="minimal"
+                                                                        data-enable-title="yes" data-title-tag="h5"
+                                                                        data-enable-instructor="no"
+                                                                        data-enable-price="yes"
+                                                                        data-enable-excerpt="yes"
+                                                                        data-excerpt-length="60"
+                                                                        data-enable-students="yes"
+                                                                        data-enable-category="yes"
+                                                                        data-pagination-type="no-pagination"
+                                                                        data-filter="no"
+                                                                        data-enable-article-animation="no"
+                                                                        data-course-slider-on="no"
+                                                                        data-enable-loop="yes"
+                                                                        data-enable-autoplay="yes"
+                                                                        data-slider-speed="5000"
+                                                                        data-slider-speed-animation="600"
+                                                                        data-enable-navigation="yes"
+                                                                        data-enable-pagination="yes"
+                                                                        data-widget="yes" data-max-num-pages="4"
+                                                                        data-next-page="2">
+                                                                        <div class="mkdf-cl-inner  clearfix">
+                                                                            <article
+                                                                                class="mkdf-cl-item post-18 course type-course status-publish has-post-thumbnail hentry course-category-languages"
+                                                                                data-name=business-english
+                                                                                data-date=1495584000>
+                                                                                <div class="mkdf-cl-item-inner">
+                                                                                    <div class="mkdf-cli-image">
+                                                                                        <img width="1000"
+                                                                                            height="639"
+                                                                                            src="assets/img/course-1-f-img.jpg"
+                                                                                            class="attachment-full size-full wp-post-image"
+                                                                                            alt="a"
+                                                                                            srcset="assets/img/course-1-f-img.jpg 1000w, assets/img/course-1-f-img-300x192.jpg 300w, assets/img/course-1-f-img-768x491.jpg 768w"
+                                                                                            sizes="(max-width: 1000px) 100vw, 1000px" />
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="mkdf-cli-text-holder">
+                                                                                        <div
+                                                                                            class="mkdf-cli-text-wrapper">
+                                                                                            <div
+                                                                                                class="mkdf-cli-text">
+                                                                                                <h5 itemprop="name"
+                                                                                                    class="mkdf-cli-title entry-title">
+                                                                                                    <a itemprop="url"
+                                                                                                        href="https://iacademy.qodeinteractive.com/course/business-english/"
+                                                                                                        target="_self">
+                                                                                                        Business
+                                                                                                        English </a>
+                                                                                                </h5>
+                                                                                                <div
+                                                                                                    class="mkdf-ci-price-holder clearfix">
+                                                                                                    <span
+                                                                                                        class="mkdf-ci-price-value">
+                                                                                                        &#36;20
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </article>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li id="nav-menu-item-3870"
+                                                                class="menu-item menu-item-type-taxonomy menu-item-object-course-category uses-custom-sidebar">
+                                                                <a href="https://iacademy.qodeinteractive.com/course-category/programming/"
+                                                                    class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">PROGRAMMING</span></span></a>
+                                                                <div class="widget mkdf-course-list-widget">
+                                                                    <div class="mkdf-course-list-holder mkdf-cl-gallery mkdf-normal-space mkdf-cl-one-column mkdf-cl-minimal mkdf-cl-pag-no-pagination     "
+                                                                        data-number-of-columns="1"
+                                                                        data-space-between-items="normal"
+                                                                        data-number-of-items="1"
+                                                                        data-enable-image="yes"
+                                                                        data-image-proportions="full"
+                                                                        data-category="programming"
+                                                                        data-order-by="date" data-order="ASC"
+                                                                        data-item-layout="minimal"
+                                                                        data-enable-title="yes" data-title-tag="h5"
+                                                                        data-enable-instructor="no"
+                                                                        data-enable-price="yes"
+                                                                        data-enable-excerpt="yes"
+                                                                        data-excerpt-length="60"
+                                                                        data-enable-students="yes"
+                                                                        data-enable-category="yes"
+                                                                        data-pagination-type="no-pagination"
+                                                                        data-filter="no"
+                                                                        data-enable-article-animation="no"
+                                                                        data-course-slider-on="no"
+                                                                        data-enable-loop="yes"
+                                                                        data-enable-autoplay="yes"
+                                                                        data-slider-speed="5000"
+                                                                        data-slider-speed-animation="600"
+                                                                        data-enable-navigation="yes"
+                                                                        data-enable-pagination="yes"
+                                                                        data-widget="yes" data-max-num-pages="4"
+                                                                        data-next-page="2">
+                                                                        <div class="mkdf-cl-inner  clearfix">
+                                                                            <article
+                                                                                class="mkdf-cl-item post-174 course type-course status-publish has-post-thumbnail hentry course-category-programming"
+                                                                                data-name=social-computing
+                                                                                data-date=1495756800>
+                                                                                <div class="mkdf-cl-item-inner">
+                                                                                    <div class="mkdf-cli-image">
+                                                                                        <img width="1000"
+                                                                                            height="639"
+                                                                                            src="assets/img/course-2-f-img.jpg"
+                                                                                            class="attachment-full size-full wp-post-image"
+                                                                                            alt="a"
+                                                                                            srcset="assets/img/course-2-f-img.jpg 1000w, assets/img/course-2-f-img-300x192.jpg 300w, assets/img/course-2-f-img-768x491.jpg 768w"
+                                                                                            sizes="(max-width: 1000px) 100vw, 1000px" />
+                                                                                    </div>
+                                                                                    <div
+                                                                                        class="mkdf-cli-text-holder">
+                                                                                        <div
+                                                                                            class="mkdf-cli-text-wrapper">
+                                                                                            <div
+                                                                                                class="mkdf-cli-text">
+                                                                                                <h5 itemprop="name"
+                                                                                                    class="mkdf-cli-title entry-title">
+                                                                                                    <a itemprop="url"
+                                                                                                        href="https://iacademy.qodeinteractive.com/course/social-computing/"
+                                                                                                        target="_self">
+                                                                                                        Social
+                                                                                                        Computing
+                                                                                                    </a>
+                                                                                                </h5>
+                                                                                                <div
+                                                                                                    class="mkdf-ci-price-holder clearfix">
+                                                                                                    <span
+                                                                                                        class="mkdf-ci-price-free">
+                                                                                                        Free </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </article>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li id="nav-menu-item-83"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  has_sub narrow">
+                                                <a href="#" class=" no_link"
+                                                    onclick="JavaScript: return false;"><span
+                                                        class="item_outer"><span
+                                                            class="item_text">Instructors</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                <div class="second">
+                                                    <div class="inner">
+                                                        <ul>
+                                                            <li id="nav-menu-item-140"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/become-an-instructor/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Become an
+                                                                            Instructor</span></span></a></li>
+                                                            <li id="nav-menu-item-111"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-instructor ">
+                                                                <a href="https://iacademy.qodeinteractive.com/instructor/edward-bowman/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Instructor
+                                                                            Single</span></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li id="nav-menu-item-85"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  has_sub narrow">
+                                                <a href="#" class=" no_link"
+                                                    onclick="JavaScript: return false;"><span
+                                                        class="item_outer"><span class="item_text">Events</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                <div class="second">
+                                                    <div class="inner">
+                                                        <ul>
+                                                            <li id="nav-menu-item-2953"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom ">
+                                                                <a href="https://iacademy.qodeinteractive.com/events/2021-07/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Events
+                                                                            Calendar</span></span></a></li>
+                                                            <li id="nav-menu-item-3086"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom ">
+                                                                <a href="https://iacademy.qodeinteractive.com/events/list/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Events
+                                                                            List</span></span></a></li>
+                                                            <li id="nav-menu-item-223322"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-tribe_events ">
+                                                                <a href="https://iacademy.qodeinteractive.com/event/inspiring-discovery/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Event
+                                                                            Single</span></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li id="nav-menu-item-79"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  has_sub narrow">
+                                                <a href="#" class=" no_link"
+                                                    onclick="JavaScript: return false;"><span
+                                                        class="item_outer"><span class="item_text">Pages</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                <div class="second">
+                                                    <div class="inner">
+                                                        <ul>
+                                                            <li id="nav-menu-item-2113"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/about/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">About</span></span></a>
+                                                            </li>
+                                                            <li id="nav-menu-item-2342"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/gallery/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Gallery</span></span></a>
+                                                            </li>
+                                                            <li id="nav-menu-item-2111"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/pricing-plan/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Pricing
+                                                                            Plan</span></span></a></li>
+                                                            <li id="nav-menu-item-80"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">Blog</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-1502"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/blog-standard/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Standard
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-1500"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/blog-masonry/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Masonry
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-1501"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/blog-split/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Blog
+                                                                                    Split</span></span></a></li>
+                                                                    <li id="nav-menu-item-2520"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-post ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/our-students-come-first/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Standard
+                                                                                    Post</span></span></a></li>
+                                                                    <li id="nav-menu-item-2523"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-post ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/either-move-or-be-moved/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Quote
+                                                                                    Post</span></span></a></li>
+                                                                    <li id="nav-menu-item-2521"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-post ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/fit-your-busy-life/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Link
+                                                                                    Post</span></span></a></li>
+                                                                    <li id="nav-menu-item-2522"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-post ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/we-all-want-to-become-successful/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Audio
+                                                                                    Post</span></span></a></li>
+                                                                    <li id="nav-menu-item-2525"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-post ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/greatness-will-come/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Video
+                                                                                    Post</span></span></a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-81"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">Shop</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-94"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Shop
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-2515"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-product ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/product/seo-professional/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Standard
+                                                                                    Product</span></span></a></li>
+                                                                    <li id="nav-menu-item-2512"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-product ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/product/guide-to-success/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Grouped
+                                                                                    Product</span></span></a></li>
+                                                                    <li id="nav-menu-item-2513"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-product ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/product/accelerate-career/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">External
+                                                                                    Product</span></span></a></li>
+                                                                    <li id="nav-menu-item-2514"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-product ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/product/the-diamond-age/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Variable
+                                                                                    Product</span></span></a></li>
+                                                                    <li id="nav-menu-item-3336"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/three-columns-grid/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Three Columns
+                                                                                    Grid</span></span></a></li>
+                                                                    <li id="nav-menu-item-3335"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/three-columns-wide/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Three Columns
+                                                                                    Wide</span></span></a></li>
+                                                                    <li id="nav-menu-item-3334"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/four-columns-grid/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Four Columns
+                                                                                    Grid</span></span></a></li>
+                                                                    <li id="nav-menu-item-3333"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/four-columns-wide/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Four Columns
+                                                                                    Wide</span></span></a></li>
+                                                                    <li id="nav-menu-item-3332"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/five-columns-grid/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Five Columns
+                                                                                    Grid</span></span></a></li>
+                                                                    <li id="nav-menu-item-3331"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/shop/five-columns-wide/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Five Columns
+                                                                                    Wide</span></span></a></li>
+                                                                    <li id="nav-menu-item-91"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/my-account/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">My
+                                                                                    account</span></span></a></li>
+                                                                    <li id="nav-menu-item-93"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/cart/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Cart</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-92"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/checkout/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Checkout</span></span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-3649"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">Forums</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-3648"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-forum ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/forums/forum/language-learning/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">All
+                                                                                    Forums</span></span></a></li>
+                                                                    <li id="nav-menu-item-3651"
+                                                                        class="menu-item menu-item-type-custom menu-item-object-custom ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/forums/topic/learning-english-abroad/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Forum
+                                                                                    Topic</span></span></a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-2112"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/contact/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Contact</span></span></a>
+                                                            </li>
+                                                            <li id="nav-menu-item-1481"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/faq/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">FAQ</span></span></a>
+                                                            </li>
+                                                            <li id="nav-menu-item-2443"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                <a href="https://iacademy.qodeinteractive.com/coming-soon/"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Coming
+                                                                            Soon</span></span></a></li>
+                                                            <li id="nav-menu-item-3650"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom ">
+                                                                <a href="https://iacademy.qodeinteractive.com/error-page"
+                                                                    class=""><span class="item_outer"><span
+                                                                            class="item_text">Error
+                                                                            Page</span></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li id="nav-menu-item-84"
+                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children  has_sub wide">
+                                                <a href="#" class=" no_link"
+                                                    onclick="JavaScript: return false;"><span
+                                                        class="item_outer"><span class="item_text">Elements</span><i
+                                                            class="mkdf-menu-arrow fa fa-angle-down"></i></span></a>
+                                                <div class="second">
+                                                    <div class="inner">
+                                                        <ul>
+                                                            <li id="nav-menu-item-1183"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">COURSE
+                                                                            SHORTCODES</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-2706"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/course-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Course
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-1184"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/course-slider/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Course
+                                                                                    Slider</span></span></a></li>
+                                                                    <li id="nav-menu-item-1186"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/course-table/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Course
+                                                                                    Table</span></span></a></li>
+                                                                    <li id="nav-menu-item-1185"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/course-features/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Course
+                                                                                    Features</span></span></a></li>
+                                                                    <li id="nav-menu-item-1187"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/instructor-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Instructor
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-2705"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/instructor-slider/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Instructor
+                                                                                    Slider</span></span></a></li>
+                                                                    <li id="nav-menu-item-2703"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/education-timeline/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Education
+                                                                                    Timeline</span></span></a></li>
+                                                                    <li id="nav-menu-item-1188"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/advanced-course-search/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Advanced
+                                                                                    Course Search</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-4204"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/linked-image-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Linked Image
+                                                                                    List</span></span></a></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-360"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">CLASSIC</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-1009"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/accordions-toggles/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Accordions
+                                                                                    &#038; Toggles</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1010"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/tabs/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Tabs</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1011"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/buttons/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Buttons</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1012"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/call-to-action/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Call To
+                                                                                    Action</span></span></a></li>
+                                                                    <li id="nav-menu-item-1057"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/contact-form/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Contact
+                                                                                    Form</span></span></a></li>
+                                                                    <li id="nav-menu-item-1013"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/separators/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Separators</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1191"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/icon-with-text/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Icon With
+                                                                                    Text</span></span></a></li>
+                                                                    <li id="nav-menu-item-1014"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/blockquote/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Blockquote</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1182"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/typography/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Typography</span></span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-364"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">INFOGRAPHIC</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-815"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/counters/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Counters</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-2723"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/countdown/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Countdown</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-814"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/pie-charts/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Pie
+                                                                                    Charts</span></span></a></li>
+                                                                    <li id="nav-menu-item-813"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/google-maps/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Google
+                                                                                    Maps</span></span></a></li>
+                                                                    <li id="nav-menu-item-812"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/process/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Process</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-1008"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/progress-bar/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Progress
+                                                                                    Bar</span></span></a></li>
+                                                                    <li id="nav-menu-item-2704"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/events-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Events
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-1007"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/pricing-tables/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Pricing
+                                                                                    Tables</span></span></a></li>
+                                                                    <li id="nav-menu-item-2707"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/comparison-pricing-tables/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Comparison
+                                                                                    Pricing Tables</span></span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li id="nav-menu-item-362"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children sub">
+                                                                <a href="#" class=" no_link"
+                                                                    onclick="JavaScript: return false;"><span
+                                                                        class="item_outer"><span
+                                                                            class="item_text">PRESENTATION</span></span></a>
+                                                                <ul>
+                                                                    <li id="nav-menu-item-625"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/team-shortcode/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Team
+                                                                                    Shortcode</span></span></a></li>
+                                                                    <li id="nav-menu-item-624"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/testimonials/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Testimonials</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-810"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/clients/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Clients</span></span></a>
+                                                                    </li>
+                                                                    <li id="nav-menu-item-809"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/blog-list-shortcode/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Blog List
+                                                                                    Shortcode</span></span></a></li>
+                                                                    <li id="nav-menu-item-1190"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/twitter-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Twitter
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-2730"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/product-list/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Product
+                                                                                    List</span></span></a></li>
+                                                                    <li id="nav-menu-item-808"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/image-gallery/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Image
+                                                                                    Gallery</span></span></a></li>
+                                                                    <li id="nav-menu-item-1193"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/masonry-gallery/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Masonry
+                                                                                    Gallery</span></span></a></li>
+                                                                    <li id="nav-menu-item-1192"
+                                                                        class="menu-item menu-item-type-post_type menu-item-object-page ">
+                                                                        <a href="https://iacademy.qodeinteractive.com/elements/video-button/"
+                                                                            class=""><span class="item_outer"><span
+                                                                                    class="item_text">Video
+                                                                                    Button</span></span></a></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </li>-->
+                                        </ul>
+                                    </nav>
+                                    <!-- <a class="mkdf-search-opener mkdf-icon-has-hover" href="javascript:void(0)">
+                                        <span class="mkdf-search-opener-wrapper">
+                                            <span aria-hidden="true"
+                                                class="mkdf-icon-font-elegant icon_search "></span> </span>
+                                    </a> -->
+                                    <!-- <div class="mkdf-shopping-cart-holder mkdf-cart-info-is-disabled">
+                                        <div class="mkdf-shopping-cart-inner">
+                                            <a itemprop="url" class="mkdf-header-cart"
+                                                href="https://iacademy.qodeinteractive.com/cart/">
+                                                <span class="mkdf-cart-icon icon_bag_alt"></span>
+                                                <span class="mkdf-cart-count">0</span>
+                                                <span class="mkdf-cart-info">
+                                                    <span class="mkdf-cart-info-number">0 items</span>
+                                                    <span class="mkdf-cart-info-total"><span
+                                                            class="woocommerce-Price-amount amount"><span
+                                                                class="woocommerce-Price-currencySymbol">&#036;</span>0.00</span></span>
+                                                </span>
+                                            </a>
+                                            <div class="mkdf-shopping-cart-dropdown">
+                                                <ul>
+                                                    <li class="mkdf-empty-cart">No products in the cart.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                   <!-- <a class="mkdf-side-menu-button-opener mkdf-icon-has-hover"
+                                        href="javascript:void(0)">
+                                        <span class="mkdf-side-menu-icon">
+                                            <span aria-hidden="true"
+                                                class="mkdf-icon-font-elegant icon_menu "></span> </span>
+                                    </a>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mkdf-slide-from-header-bottom-holder">
+                <form action="https://iacademy.qodeinteractive.com/" method="get">
+                    <div class="mkdf-form-holder">
+                        <input type="text" placeholder="Search" name="s" class="mkdf-search-field"
+                            autocomplete="off" />
+                        <button type="submit" class="mkdf-search-submit"><span class="icon_search "></span></button>
+                    </div>
+                </form>
+            </div>
+        </header>
+        <header class="mkdf-mobile-header">
+            <div class="mkdf-mobile-header-inner">
+                <div class="mkdf-mobile-header-holder">
+                    <div class="mkdf-grid">
+                        <div class="mkdf-vertical-align-containers">
+                            <div class="mkdf-position-left">
+                                <div class="mkdf-position-left-inner">
+                                    <div class="mkdf-mobile-logo-wrapper">
+                                        <a itemprop="url" href="index.html"
+                                            style="height: 32px">
+                                            <img itemprop="image"
+                                                src="assets/img/logo1.svg"
+                                                width="332" height="64" alt="Mobile Logo" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mkdf-position-right">
+                                <div class="mkdf-position-right-inner">
+                                    <div class="mkdf-mobile-menu-opener">
+                                        <a href="javascript:void(0)">
+                                            <span class="mkdf-mobile-menu-icon">
+                                                <span aria-hidden="true"
+                                                    class="mkdf-icon-font-elegant icon_menu "></span> </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mkdf-mobile-side-area">
+                <div class="mkdf-close-mobile-side-area-holder">
+                    <span aria-hidden="true" class="icon_close"></span>
+                </div>
+                <div class="mkdf-mobile-side-area-inner">
+                    <nav class="mkdf-mobile-nav">
+                        <div class="mkdf-grid">
+                            <ul id="menu-mobile-menu" class="">
+                                <li id="mobile-menu-item-4092"
+                                    class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub">
+                                    <a href="index.html" class=" current  mkdf-mobile-no-link"><span>Home</span></a>
+                                </li>
+
+                                <li id="mobile-menu-item-4092"
+                                class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub">
+                                <a href="about.html" class=" current  mkdf-mobile-no-link"><span>About</span></a>
+                            </li>
+
+                       <li id="mobile-menu-item-4092"
+                            class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub">
+                            <a href="courses.html" class=" current  mkdf-mobile-no-link"><span>Courses</span></a>
+                        </li> 
+
+                                <li id="mobile-menu-item-4092"
+                                    class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub">
+                                    <a href="https://forms.gle/b8yjWiYitGmT5hA1A" target="_blank" class=" current  mkdf-mobile-no-link"><span>Free Trial</span></a>
+                                </li>
+                                <li id="mobile-menu-item-4092"
+                                    class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children mkdf-active-item has_sub">
+                                    <a href="contact.html" class=" current  mkdf-mobile-no-link"><span>Contact</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <div class="mkdf-slide-from-header-bottom-holder">
+                <form action="#" method="get">
+                    <div class="mkdf-form-holder">
+                        <input type="text" placeholder="Search" name="s" class="mkdf-search-field"
+                            autocomplete="off" />
+                        <button type="submit" class="mkdf-search-submit"><span class="icon_search "></span></button>
+                    </div>
+                </form>
+            </div>
+        </header>
+    `)
+  );
+}
+
+function renderFooter() {
+  $("#adv-footer").append(
+    $(`
+        <footer class="mkdf-page-footer">
+            <div class="mkdf-footer-top-holder  standard">
+                <div class="mkdf-footer-top-inner mkdf-grid ">
+                    <div class="mkdf-grid-row mkdf-footer-top-alignment-left">
+                        <div class="mkdf-column-content mkdf-grid-col-3">
+                            <div class="widget mkdf-image-widget ">
+                                <img itemprop="image"
+                                        src="assets/img/footer-logo-1.png"
+                                        alt="a" width="137" height="27" /> </div>
+                         
+
+                          <div id="text-12" class="widget mkdf-footer-column-1 widget_text">
+                                <div class="textwidget"> 
+                                <a href="https://g.page/advaspire?share" target="_blank"> <li> Semenyih Branch </li> </a>
+                                <a href="https://g.page/AdvaspireKepong?share"  target="_blank"> <li> Kepong Branch</li> </a>
+                                </div>
+                            </div>  
+
+                           <!-- <div id="text-12" class="widget mkdf-footer-column-1 widget_text">
+                                <div class="textwidget">32A-3, Jalan Ecohill 1/5A, Setia Ecohill,43500 Semenyih, Selangor, Malaysia.</div>
+                            </div>  -->
+                            <a class="mkdf-icon-widget-holder mkdf-icon-has-hover" data-hover-color=""
+                                href="tel:+60382115425" target="_self"
+                                style="color: #ffffff;font-size: 17px;margin: 0 0 15px">
+                                <span class="mkdf-icon-widget icon-call-in"></span> <span
+                                    class="mkdf-icon-text">+603 8211 5425</span> </a>
+                            <a class="mkdf-icon-widget-holder mkdf-icon-has-hover" data-hover-color=""
+                                href="https://api.whatsapp.com/send?phone=60186699249&text=&source=&data=&app_absent=" target="_blank"
+                                style="color: #ffffff;font-size: 17px;margin: 0 0 15px">
+                                <img src="assets/img/whatsapp1.svg" width="20px" height="20px" />
+                                 <span class="mkdf-icon-text">+6018 669 9249</span> </a>
+                            <a class="mkdf-icon-widget-holder mkdf-icon-has-hover" data-hover-color=""
+                                href="#" target="_self"
+                                style="color: #ffffff;font-size: 19px">
+                                <span class="mkdf-icon-widget      icon-clock" ></span> <span
+                                    class="mkdf-icon-text">Tue - Sat | 10:00am - 7:00pm</span> </a>
+                        </div>
+                        <div class="mkdf-column-content mkdf-grid-col-3">
+                            <div class="widget mkdf-course-list-widget">
+                                <div class="mkdf-widget-title-holder">
+                                    <h4 class="mkdf-widget-title">Popular Courses</h4>
+                                </div>
+                                <div class="mkdf-course-list-holder mkdf-cl-gallery mkdf-normal-space mkdf-cl-one-column mkdf-cl-minimal mkdf-cl-pag-no-pagination     "
+                                    data-number-of-columns="1" data-space-between-items="normal"
+                                    data-number-of-items="3" data-enable-image="no" data-image-proportions="full"
+                                    data-order-by="date" data-order="ASC" data-item-layout="minimal"
+                                    data-enable-title="yes" data-title-tag="h5" data-enable-instructor="yes"
+                                    data-enable-price="no" data-enable-excerpt="yes" data-excerpt-length="60"
+                                    data-enable-students="yes" data-enable-category="yes"
+                                    data-pagination-type="no-pagination" data-filter="no"
+                                    data-enable-article-animation="no" data-course-slider-on="no"
+                                    data-enable-loop="yes" data-enable-autoplay="yes" data-slider-speed="5000"
+                                    data-slider-speed-animation="600" data-enable-navigation="yes"
+                                    data-enable-pagination="yes" data-widget="yes" data-max-num-pages="6"
+                                    data-next-page="2">
+                                    <div class="mkdf-cl-inner clearfix">
+                                        <article
+                                            class="mkdf-cl-item post-18 course type-course status-publish has-post-thumbnail hentry course-category-languages"
+                                            data-name=business-english data-date=1495584000>
+                                            <div class="mkdf-cl-item-inner">
+                                                <div class="mkdf-cli-text-holder">
+                                                    <div class="mkdf-cli-text-wrapper">
+                                                        <div class="mkdf-cli-text">
+                                                            <h5 itemprop="name" class="mkdf-cli-title entry-title">
+                                                                <a itemprop="url" href="syllabus.html?id=12" target="_self">
+                                                                    Scratch Game Coding </a> </h5>
+                                                            
+                                                                <span class="mkdf-instructor-name" style="font-weight: 20 !important;"> Online Class </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        <article
+                                            class="mkdf-cl-item post-174 course type-course status-publish has-post-thumbnail hentry course-category-programming"
+                                            data-name=social-computing data-date=1495756800>
+                                            <div class="mkdf-cl-item-inner">
+                                                <div class="mkdf-cli-text-holder">
+                                                    <div class="mkdf-cli-text-wrapper">
+                                                        <div class="mkdf-cli-text">
+                                                            <h5 itemprop="name" class="mkdf-cli-title entry-title">
+                                                                <a itemprop="url"
+                                                                    href="syllabus.html?id=12"
+                                                                    target="_self">
+                                                                    Minecraft Game Coding </a>
+                                                            </h5>
+                                                           
+                                                                <span class="mkdf-instructor-name" style="font-weight: 20 !important;">
+                                                                   Online Class </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        <article
+                                            class="mkdf-cl-item post-229 course type-course status-publish has-post-thumbnail hentry course-category-languages"
+                                            data-name=learn-spanish data-date=1495756800>
+                                            <div class="mkdf-cl-item-inner">
+                                                <div class="mkdf-cli-text-holder">
+                                                    <div class="mkdf-cli-text-wrapper">
+                                                        <div class="mkdf-cli-text">
+                                                            <h5 itemprop="name" class="mkdf-cli-title entry-title">
+                                                                <a itemprop="url"
+                                                                    href="syllabus.html?id=11"
+                                                                    target="_self">
+                                                                    Advabot Robotic Coding </a>
+                                                            </h5>
+                                                           
+                                                                <span class="mkdf-instructor-name" style="font-weight: 20 !important;">
+                                                                   Physical / Online Class </span>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mkdf-column-content mkdf-grid-col-3">
+                            <div id="nav_menu-2" class="widget mkdf-footer-column-3 widget_nav_menu">
+                                <div class="mkdf-widget-title-holder">
+                                    <h4 class="mkdf-widget-title">Support</h4>
+                                </div>
+                                <div class="menu-footer-custom-menu-container">
+                                    <ul id="menu-footer-custom-menu" class="menu">
+                                        <li id="menu-item-2540"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2540">
+                                            <a href="contact.html">Contact Us</a>
+                                        </li>
+
+                                          <li id="menu-item-2540"
+                                            class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2540">
+                                            <a href="https://forms.gle/b8yjWiYitGmT5hA1A">Free Trial</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mkdf-column-content mkdf-grid-col-3">
+                            <div class="widget mkdf-image-widget ">
+                                <div class="mkdf-widget-title-holder">
+                                    <h4 class="mkdf-widget-title" style="text-align:center;color:#fed63f;font-size:1.1rem;" >Flexible Learning</h4>
+                                </div><a itemprop="url" href="#" target="_self"><img itemprop="image"
+                                        src="assets/img/footer-img-1.png"
+                                        alt="a" width="600" height="400" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mkdf-footer-bottom-holder  standard">
+                <div class="mkdf-footer-bottom-inner mkdf-grid">
+                    <div class="mkdf-grid-row ">
+                        <div class="mkdf-grid-col-6">
+                            <div id="text-5" class="widget mkdf-footer-bottom-column-1 widget_text">
+                                <div class="textwidget">
+                                    <p><a href="https://im90s.org"
+                                            target="_blank" rel="noopener noreferrer"><span
+                                                style="color: white;">Copyright © 2020-2021 Advaspire Sdn.Bhd. (1273429-A). All rights reserved.</span></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mkdf-grid-col-6">
+                            <div id="text-4" class="widget mkdf-footer-bottom-column-2 widget_text">
+                                <div class="textwidget">
+                                    <a href="tel:+60382115425" style="display: inline-block; font-size: 12px;">CALL +603 8211 5425
+                                    </a>
+                                    <div style="display: inline-block;font-size: 12px; margin-left:15px;">FOLLOW US
+                                    </div>
+                                </div>
+                            </div>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: white;font-size: 14px;margin: 0 0 0 21px;"
+                                href="https://twitter.com/advaspire_hq" target="_blank">
+                                <span class="mkdf-social-icon-widget  social_twitter"></span> </a>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: white;;font-size: 15px;margin: 0 23px;"
+                                href="https://www.instagram.com/advaspire_robotics" target="_blank">
+                                <span class="mkdf-social-icon-widget fa fa-instagram"></span> </a>
+                            <a class="mkdf-social-icon-widget-holder mkdf-icon-has-hover" data-hover-color="#EC2028"
+                                style="color: white;font-size: 13px;"
+                                href="https://www.facebook.com/advaspire" target="_blank">
+                                <span class="mkdf-social-icon-widget  social_facebook"></span> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    `)
+  );
+}
+
+$("#adv-leads-form").on("submit", function (e) {
+  if (!e.isDefaultPrevented()) {
+    const name = $("#adv-name").val(),
+      email = $("#adv-email").val(),
+      phone = $("#adv-phone").val();
+
+    if (!(name || email || phone)) {
+      UIkit.modal($("#adv-lead-error-modal")).show();
+      return;
+    }
+
+    $.post(API_URL + "/web-leads", {
+      name,
+      email,
+      phone,
+    })
+      .done(function (data) {
+        UIkit.modal($("#adv-lead-success-modal")).show();
+        $("#adv-leads-form")[0].reset();
+      })
+      .fail(function (xhr, status, error) {
+        UIkit.modal($("#adv-lead-error-modal")).show();
+      });
+  }
+  return false;
+});

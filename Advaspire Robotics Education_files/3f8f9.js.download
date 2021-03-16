@@ -1,0 +1,166 @@
+if (function(e, o, a) {
+        var t, n = e.getElementsByTagName(o)[0];
+        e.getElementById(a) || ((t = e.createElement(o)).id = a, t.src = "", n.parentNode.insertBefore(t, n))
+    }(document, "script", "facebook-jssdk"), "undefined" != typeof mkdfSocialLoginVars) var facebookAppId = mkdfSocialLoginVars.social.facebookAppId;
+facebookAppId && (window.fbAsyncInit = function() { FB.init({ appId: facebookAppId, cookie: !0, xfbml: !0, version: "v5.0" }), window.FB = FB }),
+    function(e) {
+        "use strict";
+        var o = {};
+
+        function a() {
+            var o = e(".mkdf-modal-opener"),
+                a = e(".mkdf-modal-holder");
+            o.length && a.length && (o.click(function(o) {
+                o.preventDefault();
+                var t = e(this).data("modal");
+                a.fadeOut(300), a.removeClass("opened"), a.each(function() { var o = e(this); "undefined" !== o.data("modal") && o.data("modal") == t && (o.fadeIn(300), o.addClass("opened")) })
+            }), a.each(function() {
+                var o = e(this);
+                o.click(function(e) { o.hasClass("opened") && (o.fadeOut(300), o.removeClass("opened")) }), e(window).on("keyup", function(e) { o.hasClass("opened") && 27 == e.keyCode && (o.fadeOut(300), o.removeClass("opened")) }), o.find(".mkdf-modal-content").click(function(e) { e.stopPropagation() })
+            }))
+        }
+
+        function t() {
+            e(".mkdf-login-form").on("submit", function(o) {
+                o.preventDefault();
+                var a = { action: "mkdf_membership_login_user", security: e(this).find("#mkdf-login-security").val(), login_data: e(this).serialize() };
+                return e.ajax({
+                    type: "POST",
+                    data: a,
+                    url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                    success: function(e) {
+                        var o;
+                        s(o = JSON.parse(e)), "success" == o.status && (window.location = o.redirect)
+                    }
+                }), !1
+            })
+        }
+
+        function n() {
+            e(".mkdf-register-form").on("submit", function(o) {
+                o.preventDefault();
+                var a = { action: "mkdf_membership_register_user", security: e(this).find("#mkdf-register-security").val(), register_data: e(this).serialize() };
+                return e.ajax({
+                    type: "POST",
+                    data: a,
+                    url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                    success: function(e) {
+                        var o;
+                        s(o = JSON.parse(e)), "success" == o.status && (window.location = o.redirect)
+                    }
+                }), !1
+            })
+        }
+
+        function i() {
+            var o = e(".mkdf-reset-pass-form");
+            o.submit(function(a) {
+                a.preventDefault();
+                var t = { action: "mkdf_membership_user_lost_password", user_login: o.find("#user_reset_password_login").val() };
+                e.ajax({
+                    type: "POST",
+                    data: t,
+                    url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                    success: function(e) {
+                        var o = JSON.parse(e);
+                        s(o), "success" == o.status && (window.location = o.redirect)
+                    }
+                })
+            })
+        }
+
+        function s(o) {
+            var a = e(".mkdf-membership-response-holder"),
+                t = _.template(e(".mkdf-membership-response-template").html())({ messageClass: "success" === o.status ? "mkdf-membership-message-succes" : "mkdf-membership-message-error", message: o.message });
+            a.html(t)
+        }
+
+        function r() {
+            e(".mkdf-facebook-login-holder").submit(function(o) {
+                o.preventDefault(), window.FB.login(function(o) {
+                    ! function(o) {
+                        "connected" === o.status ? (console.log("Welcome! Fetching information from Facebook..."), FB.api("/me", "GET", { fields: "id, name, email, link, picture" }, function(o) {
+                            var a = e(".mkdf-facebook-login-holder [name^=mkdf_nonce_facebook_login]").val();
+                            o.nonce = a, o.image = o.picture.data.url;
+                            var t = { action: "mkdf_membership_check_facebook_user", response: o };
+                            e.ajax({
+                                type: "POST",
+                                data: t,
+                                url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                                success: function(e) {
+                                    var o;
+                                    s(o = JSON.parse(e)), "success" == o.status && (window.location = o.redirect)
+                                }
+                            })
+                        })) : "not_authorized" === o.status ? console.log("Please log into this app") : console.log("Please log into Facebook")
+                    }(o)
+                }, { scope: "email, public_profile" })
+            })
+        }
+
+        function d() {
+            if ("undefined" != typeof mkdfSocialLoginVars) var o = mkdfSocialLoginVars.social.googleClientId;
+            o ? gapi.load("auth2", function() {
+                window.auth2 = gapi.auth2.init({ client_id: o }), e(".mkdf-google-login-holder").submit(function(o) {
+                    o.preventDefault(), window.auth2.signIn(),
+                        function() {
+                            if (window.auth2.isSignedIn.get()) {
+                                var o = window.auth2.currentUser.get(),
+                                    a = o.getBasicProfile(),
+                                    t = e(".mkdf-google-login-holder [name^=mkdf_nonce_google_login]").val(),
+                                    n = { id: a.getId(), name: a.getName(), email: a.getEmail(), image: a.getImageUrl(), link: "https://plus.google.com/" + a.getId(), nonce: t },
+                                    i = { action: "mkdf_membership_check_google_user", response: n };
+                                e.ajax({
+                                    type: "POST",
+                                    data: i,
+                                    url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                                    success: function(e) {
+                                        var o;
+                                        s(o = JSON.parse(e)), "success" == o.status && (window.location = o.redirect)
+                                    }
+                                })
+                            }
+                        }()
+                })
+            }) : e(".mkdf-google-login-holder").submit(function(e) { e.preventDefault() })
+        }
+
+        function f() {
+            var o = e("#mkdf-membership-update-profile-form");
+            if (o.length) {
+                var a = o.find("button"),
+                    t = a.data("updating-text"),
+                    n = a.data("updated-text");
+                o.on("submit", function(o) {
+                    o.preventDefault();
+                    var i = a.html();
+                    a.html(t);
+                    var r = { action: "mkdf_membership_update_user_profile", data: e(this).serialize() };
+                    return e.ajax({
+                        type: "POST",
+                        data: r,
+                        url: mkdfGlobalVars.vars.mkdfAjaxUrl,
+                        success: function(e) {
+                            var o;
+                            s(o = JSON.parse(e)), "success" == o.status ? (a.html(n), window.location = o.redirect) : a.html(i)
+                        }
+                    }), !1
+                })
+            }
+        }
+        "undefined" != typeof mkdf && (mkdf.modules.socialLogin = o), o.mkdfUserLogin = t, o.mkdfUserRegister = n, o.mkdfUserLostPassword = i, o.mkdfInitWidgetModal = a, o.mkdfInitFacebookLogin = r, o.mkdfInitGooglePlusLogin = d, o.mkdfUpdateUserProfile = f, e(document).ready(function() { a(), t(), n(), i(), f() }), e(window).load(function() {
+            r(), d(),
+                function() {
+                    e(".mkdf-membership-main-wrapper");
+                    var o = e(".page-template-user-dashboard .mkdf-content"),
+                        a = e(".mkdf-page-footer"),
+                        t = 0;
+                    !mkdf.body.hasClass("mkdf-header-transparent") && mkdf.windowWidth > 1024 && (t = t + mkdfGlobalVars.vars.mkdfMenuAreaHeight + mkdfGlobalVars.vars.mkdfLogoAreaHeight);
+                    a.length > 0 && (t += a.outerHeight());
+                    if (mkdf.windowWidth > 1024) {
+                        var n = mkdf.windowHeight - t;
+                        o.css({ "min-height": n + "px" })
+                    }
+                }()
+        }), e(window).resize(function() {}), e(window).scroll(function() {})
+    }(jQuery);

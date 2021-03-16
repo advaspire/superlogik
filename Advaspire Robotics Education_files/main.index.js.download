@@ -1,0 +1,29 @@
+const execution = () => {
+    renderHeader();
+    renderFooter();
+};
+execution();
+
+/* code below dont delete */
+
+/* <![CDATA[ */
+var mkdfGlobalVars = {
+    vars: {
+        mkdfAddForAdminBar: 0,
+        mkdfElementAppearAmount: -100,
+        mkdfAjaxUrl: "https://iacademy.qodeinteractive.com/wp-admin/admin-ajax.php",
+        mkdfAddingToCart: "Adding...",
+        mkdfStickyHeaderHeight: 0,
+        mkdfStickyHeaderTransparencyHeight: 70,
+        mkdfTopBarHeight: 46,
+        mkdfLogoAreaHeight: 0,
+        mkdfMenuAreaHeight: 141,
+        mkdfMobileHeaderHeight: 70,
+    },
+};
+var mkdfPerPageVars = {
+    vars: {
+        mkdfStickyScrollAmount: 0,
+        mkdfHeaderTransparencyHeight: 95,
+    },
+};
